@@ -29,18 +29,19 @@ async def on_ready():
 @client.event
 async def on_message(message):
   global censoring
+  global censoredwords
   if message.author == client.user:
     return
 
   msg = message.content.lower()
 
-  if msg.startswith("-hello") or msg.startswith("-hi"):
-    await message.channel.send("Hello! Type -help to see all the available commands.")
-
   if msg.startswith("-") == False and censoring is True:
     if any(word in msg for word in censoredwords):
       await message.delete()
   
+  if msg.startswith("-hello") or msg.startswith("-hi"):
+    await message.channel.send("Hello! Type -help to see all the available commands.")
+
   if msg.startswith("-add"):
     word = msg.split("-add ", 1)[1]
     update_censoredwords(word)
@@ -62,8 +63,12 @@ async def on_message(message):
       censoring = True
       await message.channel.send("Censor Bot has started censoring.")
 
+  if msg.startswith("-clear"):
+    censoredwords = []
+    await message.channel.send("All words were removed from the list of censored words.")
+
   if msg.startswith("-help"):
-    await message.channel.send("-add: you can add a word to the list of censored words \n-remove: you can remove a word from the list of censored words \n-toggle: you can toggle whether or not the bot is censoring \n-list: lists all the words that are currently being censored")
+    await message.channel.send("-add: you can add a word to the list of censored words \n-remove: you can remove a word from the list of censored words \n-toggle: you can toggle whether or not the bot is censoring \n-list: lists all the words that are currently being censored \n-clear: clear all words from the list of censored words")
 
 keep_running()  
 client.run(os.getenv("TOKEN"))
