@@ -7,7 +7,7 @@ from run import keep_running
 
 client = discord.Client()
 
-censoredwords = ["fuck", "bitch", "shit", "ass", "nigga"]
+censoredwords = ["fuck", "bitch", "shit", "ass"]
 censoring = True
 
 def update_censoredwords(word):
